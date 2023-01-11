@@ -7,6 +7,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   bool? isWishlistPage;
   void Function()? onBackPress;
   bool? isProductInCart;
+  Color backArrowColor;
+  Color favoriteIconColor;
 
   CustomAppBar({
     Key? key,
@@ -15,6 +17,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     this.isWishlistPage = false,
     this.onBackPress,
     this.isProductInCart,
+    this.backArrowColor= Colors.black,
+    this.favoriteIconColor = Colors.black,
   }) : super(key: key);
 
   @override
@@ -29,7 +33,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
               onPressed: onBackPress,
               icon: Icon(
                 Icons.arrow_back_ios,
-                color: Colors.black,
+                color: backArrowColor,
               ))
           : SizedBox(),
       title: Container(
@@ -54,7 +58,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 },
                 icon: Icon(
                   Icons.favorite,
-                  color: Colors.black,
+                  color: favoriteIconColor,
                 ),
               )
             : SizedBox()

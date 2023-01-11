@@ -26,6 +26,7 @@ class OrderSummary extends StatelessWidget {
                   )
                 ],
               ),
+              SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

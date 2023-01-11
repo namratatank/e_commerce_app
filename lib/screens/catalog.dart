@@ -17,6 +17,9 @@ class CatalogScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: categoryModel.name,
+        onBackPress: (){
+          Navigator.pop(context);
+        },
       ),
       body: GridView.builder(
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),

@@ -1,4 +1,6 @@
 import 'package:e_commerce_app/blocs/checkout/checkout_bloc.dart';
+import 'package:e_commerce_app/screens/orderConfirmation.dart';
+import 'package:e_commerce_app/screens/payment_selection.dart';
 import 'package:e_commerce_app/widgets/navigation_button.dart';
 import 'package:e_commerce_app/widgets/order_summary.dart';
 import 'package:e_commerce_app/widgets/widgets.dart';
@@ -38,6 +40,7 @@ class CheckoutScreen extends StatelessWidget {
                   title: 'ORDER NOW',
                   onPressed: () {
                     context.read<CheckoutBloc>().add(ConfirmCheckout(checkoutModel: state.checkoutModel));
+                    Navigator.push(context, MaterialPageRoute(builder: (builder)=>OrderConfirmation()));
                   },
                 );
               } else {
@@ -85,6 +88,7 @@ class CheckoutScreen extends StatelessWidget {
                             .add(UpdateCheckout(name: value));
                       },
                     ),
+                    SizedBox(height: 10),
                     const Text(
                       'DELIVERY INFORMATION',
                       style: TextStyle(
@@ -124,10 +128,13 @@ class CheckoutScreen extends StatelessWidget {
                             .add(UpdateCheckout(zipCode: value));
                       },
                     ),
+                    SizedBox(height: 10),
                     Container(
                       height: 50,
                       child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (builder)=>PaymentSelection()));
+                          },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black),
                           child: Row(
@@ -138,7 +145,7 @@ class CheckoutScreen extends StatelessWidget {
                             ],
                           )),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 15),
                     const Text(
                       'ORDER SUMMARY',
                       style: TextStyle(
