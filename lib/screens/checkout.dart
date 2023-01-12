@@ -133,13 +133,14 @@ class CheckoutScreen extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                           onPressed: () {
+                            context.read<CheckoutBloc>().add(ConfirmCheckout(checkoutModel: state.checkoutModel));
                             Navigator.push(context, MaterialPageRoute(builder: (builder)=>PaymentSelection()));
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                            children: const [
                               Text('SELECT A PAYMENT METHOD'),
                               Icon(Icons.arrow_forward)
                             ],

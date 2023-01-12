@@ -15,6 +15,7 @@ class UpdateCheckout extends CheckoutEvent {
   final String? country;
   final String? zipCode;
   final CartModel? cartModel;
+  final PaymentMethod? paymentMethod;
 
   const UpdateCheckout({
     this.name,
@@ -24,6 +25,7 @@ class UpdateCheckout extends CheckoutEvent {
     this.country,
     this.zipCode,
     this.cartModel,
+    this.paymentMethod,
   });
 
   @override
@@ -34,6 +36,7 @@ class UpdateCheckout extends CheckoutEvent {
     city,
     country,
     zipCode,
+    paymentMethod,
   ];
 }
 

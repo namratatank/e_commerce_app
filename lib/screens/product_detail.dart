@@ -110,16 +110,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                          SnackBar(
                           content: Text('Added to your cart'),
-                          action: SnackBarAction(
-                              label: 'Go to cart',
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (builder) => Dashboard(
-                                          index: 1,
-                                        )));
-                              }),
+                           duration: Duration(seconds: 1),
                         ),
                       );
                     },

@@ -7,3 +7,5 @@ export 'cart_product_card.dart';
 export 'wishlist_card.dart';
 export 'navigation_button.dart';
 export 'order_summary.dart';
+export 'google_pay.dart';
+export 'apple_pay.dart';
