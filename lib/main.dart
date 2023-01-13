@@ -3,6 +3,8 @@ import 'package:e_commerce_app/blocs/category/category_bloc.dart';
 import 'package:e_commerce_app/blocs/checkout/checkout_bloc.dart';
 import 'package:e_commerce_app/blocs/payment/payment_bloc.dart';
 import 'package:e_commerce_app/blocs/wishlist/wishlist_bloc.dart';
+import 'package:e_commerce_app/localstorage/local_storage_repository.dart';
+import 'package:e_commerce_app/models/product_model.dart';
 import 'package:e_commerce_app/pages/dashboard.dart';
 import 'package:e_commerce_app/repositories/category/category_repository.dart';
 import 'package:e_commerce_app/repositories/checkout/checkout_repository.dart';
@@ -12,10 +14,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ProductModelAdapter());
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
@@ -32,7 +37,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => WishListBloc()..add(StartWishlist()),
+          create: (_) => WishListBloc(localStorageRepository: LocalStorageRepository())..add(StartWishlist()),
         ),
         BlocProvider(
           create: (_) => CartBloc()..add(CartStarted()),

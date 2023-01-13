@@ -1,30 +1,54 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+part 'product_model.g.dart';
 
+
+@HiveType(typeId: 0)
 class ProductModel extends Equatable {
+  @HiveField(0)
+  final String id;
+  @HiveField(1)
   final String? name;
+  @HiveField(2)
   final String? category;
+  @HiveField(3)
   final String? imageUrl;
+  @HiveField(4)
   final double? price;
+  @HiveField(5)
   final bool? isRecommended;
+  @HiveField(6)
   final bool? isPopular;
-   bool isItemInWishlist;
+  @HiveField(7)
+  bool isItemInWishlist;
 
-   ProductModel(
-      {this.name,
+  ProductModel(
+      {required this.id,
+      this.name,
       this.category,
       this.imageUrl,
       this.price,
       this.isRecommended,
-      this.isPopular, this.isItemInWishlist = false});
+      this.isPopular,
+      this.isItemInWishlist = false});
 
   @override
   // TODO: implement props
-  List<Object?> get props =>
-      [name, category, imageUrl, price, isRecommended, isPopular, isItemInWishlist];
+  List<Object?> get props => [
+        name,
+        category,
+        imageUrl,
+        price,
+        isRecommended,
+        isPopular,
+        isItemInWishlist,
+        id,
+      ];
 
   static ProductModel fromSnapshot(DocumentSnapshot snap) {
     ProductModel productModel = ProductModel(
+      id: snap.id,
       name: snap['name'],
       category: snap['category'],
       imageUrl: snap['imageUrl'],
@@ -36,7 +60,8 @@ class ProductModel extends Equatable {
   }
 
   static List<ProductModel> products = [
-     ProductModel(
+    ProductModel(
+        id: '0',
         name: 'Soft drink 1',
         category: 'Soft drinks',
         imageUrl:
@@ -44,7 +69,8 @@ class ProductModel extends Equatable {
         price: 100,
         isRecommended: true,
         isPopular: false),
-     ProductModel(
+    ProductModel(
+        id: '1',
         name: 'Soft drink 2',
         category: 'Soft drinks',
         imageUrl:
@@ -52,7 +78,8 @@ class ProductModel extends Equatable {
         price: 125,
         isRecommended: true,
         isPopular: true),
-     ProductModel(
+    ProductModel(
+        id: '2',
         name: 'Soft drink 3',
         category: 'Soft drinks',
         imageUrl:
@@ -60,7 +87,8 @@ class ProductModel extends Equatable {
         price: 100,
         isRecommended: true,
         isPopular: false),
-     ProductModel(
+    ProductModel(
+        id: '3',
         name: 'Water 1',
         category: 'Water',
         imageUrl:
@@ -68,7 +96,8 @@ class ProductModel extends Equatable {
         price: 250,
         isRecommended: false,
         isPopular: true),
-     ProductModel(
+    ProductModel(
+        id: '4',
         name: 'Water 2',
         category: 'Water',
         imageUrl:
@@ -76,7 +105,8 @@ class ProductModel extends Equatable {
         price: 150,
         isRecommended: true,
         isPopular: true),
-     ProductModel(
+    ProductModel(
+        id: '5',
         name: 'Smoothies 1',
         category: 'Smoothies',
         imageUrl:
@@ -84,7 +114,8 @@ class ProductModel extends Equatable {
         price: 350,
         isRecommended: false,
         isPopular: true),
-     ProductModel(
+    ProductModel(
+        id: '6',
         name: 'Smoothies 2',
         category: 'Smoothies',
         imageUrl:
@@ -92,7 +123,8 @@ class ProductModel extends Equatable {
         price: 200,
         isRecommended: true,
         isPopular: false),
-     ProductModel(
+    ProductModel(
+        id: '7',
         name: 'Smoothies 3',
         category: 'Smoothies',
         imageUrl:

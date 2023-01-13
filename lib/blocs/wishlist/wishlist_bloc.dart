@@ -2,6 +2,8 @@ import 'package:e_commerce_app/models/wishlist_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '../../localstorage/local_storage_repository.dart';
 import '../../models/product_model.dart';
 
 part 'wishlist_event.dart';
@@ -9,7 +11,11 @@ part 'wishlist_event.dart';
 part 'wishlist_state.dart';
 
 class WishListBloc extends Bloc<WishListEvent, WishlistState> {
-  WishListBloc() : super(WishlistLoading()) {
+  final LocalStorageRepository _localStorageRepository;
+
+  WishListBloc({required LocalStorageRepository localStorageRepository})
+      : _localStorageRepository = localStorageRepository,
+        super(WishlistLoading()) {
     on<StartWishlist>(_onStartWishlist);
     on<AddProductToWishlist>(_onAddProductToWishlist);
     on<RemoveProductFromWishlist>(_onRemoveProductFromWishlist);
@@ -19,9 +25,14 @@ class WishListBloc extends Bloc<WishListEvent, WishlistState> {
       StartWishlist event, Emitter<WishlistState> emit) async {
     emit(WishlistLoading());
     try {
+      Box box = await _localStorageRepository.openBox();
+      List<ProductModel> products = _localStorageRepository.getWishlist(box);
       await Future.delayed(Duration(seconds: 1));
-      emit(const WishlistLoaded(
-          wishListModel: WishListModel()));
+      emit(
+        WishlistLoaded(
+          wishListModel: WishListModel(products: products),
+        ),
+      );
     } catch (_) {
       emit(WishlistError());
     }
@@ -31,6 +42,8 @@ class WishListBloc extends Bloc<WishListEvent, WishlistState> {
       AddProductToWishlist event, Emitter<WishlistState> emit) async {
     if (state is WishlistLoaded) {
       try {
+        Box box = await _localStorageRepository.openBox();
+        _localStorageRepository.addProductToWishlist(box, event.product!);
         emit(
           WishlistLoaded(
             wishListModel: WishListModel(
@@ -49,12 +62,14 @@ class WishListBloc extends Bloc<WishListEvent, WishlistState> {
       RemoveProductFromWishlist event, Emitter<WishlistState> emit) async {
     if (state is WishlistLoaded) {
       try {
+        Box box = await _localStorageRepository.openBox();
+        _localStorageRepository.removeProductFromWishlist(box, event.product!);
         emit(
           WishlistLoaded(
             wishListModel: WishListModel(
                 products:
-                List.from((state as WishlistLoaded).wishListModel.products)
-                  ..remove(event.product!)),
+                    List.from((state as WishlistLoaded).wishListModel.products)
+                      ..remove(event.product!)),
           ),
         );
       } on Exception {
