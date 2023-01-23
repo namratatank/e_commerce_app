@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/blocs/auth/auth_bloc.dart';
 import 'package:e_commerce_app/blocs/cart/cart_bloc.dart';
 import 'package:e_commerce_app/blocs/category/category_bloc.dart';
 import 'package:e_commerce_app/blocs/checkout/checkout_bloc.dart';
@@ -6,8 +7,10 @@ import 'package:e_commerce_app/blocs/wishlist/wishlist_bloc.dart';
 import 'package:e_commerce_app/localstorage/local_storage_repository.dart';
 import 'package:e_commerce_app/models/product_model.dart';
 import 'package:e_commerce_app/pages/dashboard.dart';
+import 'package:e_commerce_app/repositories/auth/auth_repository.dart';
 import 'package:e_commerce_app/repositories/category/category_repository.dart';
 import 'package:e_commerce_app/repositories/checkout/checkout_repository.dart';
+import 'package:e_commerce_app/repositories/user/user_repository.dart';
 import 'package:e_commerce_app/screens/splash.dart';
 import 'package:e_commerce_app/simple_bloc_observer.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,34 +37,51 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider(
-          create: (_) => WishListBloc(localStorageRepository: LocalStorageRepository())..add(StartWishlist()),
+        RepositoryProvider(
+          create: (context) => AuthRepository(),
         ),
-        BlocProvider(
-          create: (_) => CartBloc()..add(CartStarted()),
+        RepositoryProvider(
+          create: (context) => UserRepository(),
         ),
-        BlocProvider(
-          create: (_) => PaymentBloc()..add(LoadPaymentMethod()),
-        ),
-        BlocProvider(
-          create: (context) => CheckoutBloc(
-              cartBloc: context.read<CartBloc>(),
-              paymentBloc: context.read<PaymentBloc>(),
-              checkoutRepository: CheckoutRepository()),
-        ),
-
-        // BlocProvider(
-        //   create: (_) => CategoryBloc(
-        //     categoryRepository: CategoryRepository(),
-        //   )..add(LoadCategories()),
-        // ),
       ],
-      child: const MaterialApp(
-        title: 'E-Commerce',
-        debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(
+                authRepository: context.read<AuthRepository>(),
+                userRepository: context.read<UserRepository>()),
+          ),
+          BlocProvider(
+            create: (_) =>
+                WishListBloc(localStorageRepository: LocalStorageRepository())
+                  ..add(StartWishlist()),
+          ),
+          BlocProvider(
+            create: (_) => CartBloc()..add(CartStarted()),
+          ),
+          BlocProvider(
+            create: (_) => PaymentBloc()..add(LoadPaymentMethod()),
+          ),
+          BlocProvider(
+            create: (context) => CheckoutBloc(
+                cartBloc: context.read<CartBloc>(),
+                paymentBloc: context.read<PaymentBloc>(),
+                checkoutRepository: CheckoutRepository()),
+          ),
+
+          // BlocProvider(
+          //   create: (_) => CategoryBloc(
+          //     categoryRepository: CategoryRepository(),
+          //   )..add(LoadCategories()),
+          // ),
+        ],
+        child: const MaterialApp(
+          title: 'E-Commerce',
+          debugShowCheckedModeBanner: false,
+          home: SplashScreen(),
+        ),
       ),
     );
   }
