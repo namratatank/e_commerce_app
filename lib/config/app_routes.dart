@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/pages/dashboard.dart';
+import 'package:e_commerce_app/pages/bottombar.dart';
 import 'package:flutter/material.dart';
 
 // class AppRouter{

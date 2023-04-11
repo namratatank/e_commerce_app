@@ -15,48 +15,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
   StreamSubscription<auth.User?>? _authUserSubscription;
-  StreamSubscription<UserModel?>? _userSubscription;
+  StreamSubscription<UserModel?>? _userModelSubscription;
 
   AuthBloc(
       {required AuthRepository authRepository,
       required UserRepository userRepository})
       : _authRepository = authRepository,
         _userRepository = userRepository,
-        super(const AuthState.unknown()) {
+        super(authRepository.currentUser.isNotEmpty
+            ? AuthState.authenticated(userModel: authRepository.currentUser)
+            : const AuthState.unauthenticated()) {
     on<AuthUserChanged>(_onAuthUserChanged);
+    on<AppLogoutRequested>(_onLogoutRequested);
 
-    _authUserSubscription = _authRepository.user.listen((authentic) {
-      print('Auth user : $authentic');
-      if (authentic != null) {
-        _userRepository.getUser(authentic.uid).listen((user) {
-          add(AuthUserChanged(
-            authUser: authentic,
-            userModel: user,
-          ));
-        });
-      } else {
-        add(
-          AuthUserChanged(
-            authUser: authentic,
-          ),
-        );
-      }
-    });
+    _userModelSubscription = _authRepository.user.listen((user) => add(AuthUserChanged(userModel: user)));
   }
 
   void _onAuthUserChanged(AuthUserChanged event, Emitter<AuthState> emit) {
-    event.authUser != null
-        ? emit(AuthState.authenticated(
-            authUser: event.authUser!,
-            userModel: event.userModel!,
-          ))
-        : emit(const AuthState.unauthenticated());
+    emit(event.userModel!.isNotEmpty
+        ? AuthState.authenticated(userModel: event.userModel!)
+        : AuthState.unauthenticated());
+  }
+
+  void _onLogoutRequested(AppLogoutRequested event, Emitter<AuthState> emit) {
+   unawaited(_authRepository.signOut());
   }
 
   @override
   Future<void> close() {
     _authUserSubscription?.cancel();
-    _userSubscription?.cancel();
+    _userModelSubscription?.cancel();
     return super.close();
   }
 }

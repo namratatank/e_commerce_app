@@ -5,19 +5,22 @@ import 'package:e_commerce_app/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../pages/dashboard.dart';
+import '../pages/bottombar.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = context.select((AuthBloc bloc) => bloc.state.userModel);
     Timer(Duration(seconds: 3), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (builder) => LoginScreen()));
+      user != null
+          ? Navigator.push(
+              context, MaterialPageRoute(builder: (builder) => Dashboard()))
+          : Navigator.push(
+              context, MaterialPageRoute(builder: (builder) => LoginScreen()));
     });
     return BlocListener<AuthBloc, AuthState>(
-      listenWhen: (previous, current)=> previous.authUser != current.authUser,
       listener: (context, state) {
         print('Splash screen auth listener');
       },
@@ -33,12 +36,12 @@ class SplashScreen extends StatelessWidget {
           ),
           child: const Center(
               child: Text(
-                'Foodie',
-                style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                ),
-              )),
+            'Foodie',
+            style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.bold,
+            ),
+          )),
         ),
       ),
     );

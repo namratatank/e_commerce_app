@@ -1,5 +1,5 @@
 import 'package:e_commerce_app/blocs/cart/cart_bloc.dart';
-import 'package:e_commerce_app/pages/dashboard.dart';
+import 'package:e_commerce_app/pages/bottombar.dart';
 import 'package:e_commerce_app/screens/checkout.dart';
 import 'package:e_commerce_app/widgets/navigation_button.dart';
 import 'package:e_commerce_app/widgets/order_summary.dart';

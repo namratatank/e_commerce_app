@@ -1,54 +1,66 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserModel extends Equatable {
   final String? id;
   final String fullName;
   final String email;
-  final String address;
-  final String city;
-  final String country;
-  final String zipCode;
+  final String photo;
+  // final String address;
+  // final String city;
+  // final String country;
+  // final String zipCode;
 
-  UserModel({
+ const UserModel({
     this.id,
     this.fullName = '',
     this.email = '',
-    this.address = '',
-    this.city = '',
-    this.country = '',
-    this.zipCode = '',
+   this.photo = '',
+    // this.address = '',
+    // this.city = '',
+    // this.country = '',
+    // this.zipCode = '',
   });
+
+  static const empty = UserModel(id: '');
+
+  bool get isEmpty => this == UserModel.empty;
+  bool get isNotEmpty => this != UserModel.empty;
 
   UserModel copyWith({
     String? id,
     String? fullName,
     String? email,
-    String? address,
-    String? city,
-    String? country,
-    String? zipCode,
+    String? photo,
+    // String? address,
+    // String? city,
+    // String? country,
+    // String? zipCode,
   }) {
     return UserModel(
       id: id ?? this.id,
       fullName: fullName ?? this.fullName,
       email: email ?? this.email,
-      address: address ?? this.address,
-      city: city ?? this.city,
-      country: country ?? this.country,
-      zipCode: zipCode ?? this.zipCode,
+      photo: photo ?? this.photo,
+      // address: address ?? this.address,
+      // city: city ?? this.city,
+      // country: country ?? this.country,
+      // zipCode: zipCode ?? this.zipCode,
     );
   }
+
 
   factory UserModel.fromSnapshot(DocumentSnapshot snap) {
     return UserModel(
       id: snap.id,
       fullName: snap['fullName'],
       email: snap['email'],
-      address: snap['address'],
-      city: snap['city'],
-      country: snap['country'],
-      zipCode: snap['zipCode'],
+      photo: snap['photo'],
+      // address: snap['address'],
+      // city: snap['city'],
+      // country: snap['country'],
+      // zipCode: snap['zipCode'],
     );
   }
 
@@ -56,10 +68,11 @@ class UserModel extends Equatable {
     return {
       'fullName': fullName,
       'email': email,
-      'address': address,
-      'city': city,
-      'country': country,
-      'zipCode': zipCode,
+      'photo': photo,
+      // 'address': address,
+      // 'city': city,
+      // 'country': country,
+      // 'zipCode': zipCode,
     };
   }
 
@@ -68,9 +81,10 @@ class UserModel extends Equatable {
         id,
         fullName,
         email,
-        address,
-        city,
-        country,
-        zipCode,
+    photo,
+        // address,
+        // city,
+        // country,
+        // zipCode,
       ];
 }

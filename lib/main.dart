@@ -6,7 +6,7 @@ import 'package:e_commerce_app/blocs/payment/payment_bloc.dart';
 import 'package:e_commerce_app/blocs/wishlist/wishlist_bloc.dart';
 import 'package:e_commerce_app/localstorage/local_storage_repository.dart';
 import 'package:e_commerce_app/models/product_model.dart';
-import 'package:e_commerce_app/pages/dashboard.dart';
+import 'package:e_commerce_app/pages/bottombar.dart';
 import 'package:e_commerce_app/repositories/auth/auth_repository.dart';
 import 'package:e_commerce_app/repositories/category/category_repository.dart';
 import 'package:e_commerce_app/repositories/checkout/checkout_repository.dart';

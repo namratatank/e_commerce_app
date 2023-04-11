@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/product_model.dart';
-import '../pages/dashboard.dart';
+import '../pages/bottombar.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final ProductModel productModel;
